@@ -1,8 +1,8 @@
-## Module 'repository'
+## Module 'terraform-module-github-repository'
 
 ### Description
 
-These modules are intended to create and manage GitHub repository resources following my business needs standards.  
+The **terraform-module-github-repository** is intended to create and manage GitHub repository resources following my business needs standards.  
 This includes the following guidelines:  
 * Repository names  
   * Names of GitHub repositories are lowercase and can contain the following characters only:  
