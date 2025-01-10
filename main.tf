@@ -29,22 +29,22 @@ resource "github_repository" "repository" {
   vulnerability_alerts                    = var.repository.vulnerability_alerts
   web_commit_signoff_required             = var.repository.web_commit_signoff_required
   dynamic "security_and_analysis" {
-    for_each = local.repository.visibility == "public" ? [true] : []
+    for_each    = local.repository.visibility == "public" ? [true] : []
     content {
       dynamic "advanced_security" {
-        for_each = local.repository.security_and_analysis.advanced_security.status != null ? [true] : []
+        for_each    = local.repository.security_and_analysis.advanced_security.status != null ? [true] : []
         content {
           status                                  = local.repository.security_and_analysis.advanced_security.status        
         }
       }
       dynamic "secret_scanning" {
-        for_each = local.repository.security_and_analysis.secret_scanning.status != null ? [true] : []
+        for_each    = local.repository.security_and_analysis.secret_scanning.status != null ? [true] : []
         content {
           status                                  = local.repository.security_and_analysis.secret_scanning.status        
         }
       }
       dynamic "secret_scanning_push_protection" {
-        for_each = local.repository.security_and_analysis.secret_scanning_push_protection.status != null ? [true] : []
+        for_each    = local.repository.security_and_analysis.secret_scanning_push_protection.status != null ? [true] : []
         content {
           status                                  = local.repository.security_and_analysis.secret_scanning_push_protection.status        
         }
@@ -60,7 +60,7 @@ resource "github_repository" "repository" {
     }
   }
   lifecycle {
-    ignore_changes = [ auto_init, license_template, gitignore_template, template ]
+    ignore_changes  = [ auto_init, license_template, gitignore_template, template ]
   }
 }
 
@@ -80,8 +80,17 @@ resource "github_team_repository" "team" {
   depends_on                              = [ github_repository.repository ]
 }
 
+resource "github_branch" "branch" {
+  for_each                                = { for b in var.branch : b.branch => b }
+  repository                              = github_repository.repository.name
+  branch                                  = each.value.branch
+  source_branch                           = each.value.source_branch
+  source_sha                              = each.value.source_sha
+  depends_on                              = [ github_repository.repository ]
+}
+
 resource "github_branch_default" "branch_default" {
   repository                              = github_repository.repository.name
   branch                                  = local.branch_default.branch
-  depends_on                              = [ github_repository.repository ]
+  depends_on                              = [ github_repository.repository, github_branch.branch ]
 }
