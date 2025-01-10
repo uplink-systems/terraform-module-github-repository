@@ -26,7 +26,7 @@ resource "github_repository" "repository" {
   license_template                        = var.repository.license_template
   topics                                  = var.repository.topics
   visibility                              = local.repository.visibility
-  vulnerability_alerts                    = var.repository.vulnerability_alerts
+  vulnerability_alerts                    = local.repository.vulnerability_alerts
   web_commit_signoff_required             = var.repository.web_commit_signoff_required
   dynamic "security_and_analysis" {
     for_each    = local.repository.visibility == "public" ? [true] : []
