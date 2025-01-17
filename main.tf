@@ -25,7 +25,7 @@ resource "github_repository" "repository" {
   homepage_url                            = var.repository.homepage_url
   ignore_vulnerability_alerts_during_read = var.repository.ignore_vulnerability_alerts_during_read
   is_template                             = var.repository.is_template
-  license_template                        = var.repository.license_template
+  license_template                        = local.repository.visibility == "public" ? (var.repository.license_template == null ? "eupl-1.2" : var.repository.license_template) : var.repository.license_template
   topics                                  = var.repository.topics
   visibility                              = local.repository.visibility
   vulnerability_alerts                    = local.repository.vulnerability_alerts
