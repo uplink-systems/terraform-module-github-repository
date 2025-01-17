@@ -3,7 +3,7 @@
 ####################################################################################################
 
 variable "repository" {
-  description = "Settings for the repository. At least a 'name' value must be provided."
+  description = "repository settings; at least a 'name' value must be provided."
   type        = object({
     name                                    = string
     description                             = optional(string, null)
@@ -55,7 +55,7 @@ variable "repository" {
 }
 
 variable "collaborator" {
-  description = "(Optional) Lists of collaborators separated by their permission (full/maintain/read-only/read-write/triage)"
+  description = "(Optional) object of lists of collaborators separated by their permission (full/maintain/read-only/read-write/triage)"
   type        = object({
     enabled     = optional(bool, true)
     admin       = optional(list(string), [])
@@ -68,7 +68,7 @@ variable "collaborator" {
 }
 
 variable "team" {
-  description = "(Optional) Lists of team names separated by their permission (full/maintain/read-only/read-write/triage)"
+  description = "(Optional) object of lists of team names separated by their permission (full/maintain/read-only/read-write/triage)"
   type        = object({
     enabled     = optional(bool, true)
     admin       = optional(list(string), [])
@@ -80,16 +80,8 @@ variable "team" {
   default     = { enabled = false }
 }
 
-variable "branch_default" {
-  description = "(Optional) Settings for the repository's default branch."
-  type        = object({
-    branch      = string
-  })
-  default     = null
-}
-
 variable "branch" {
-  description = "(Optional) Settings as list of additional repository branches"
+  description = "(Optional) list of objects of additional repository branches"
   type        = list(object({
     branch          = string
     source_branch   = optional(string, null)
@@ -101,6 +93,40 @@ variable "branch" {
     error_message = <<-EOF
       Branch naming violation: 'var.branch.branch' has an invalid value.
       The value "main" is not allowed as additional branch name.
+    EOF
+  }
+}
+
+variable "branch_default" {
+  description = "(Optional) object of repository's default branch."
+  type        = object({
+    branch      = string
+  })
+  default     = null
+}
+
+variable "repository_milestone" {
+  description = "(Optional) map of objects of repository's milestones"
+  type        = map(object({
+    owner           = string
+    title           = string
+    description     = optional(string, null)
+    due_date        = optional(string, null)
+    state           = optional(string, null)
+  }))
+  default     = { }
+  validation {
+    condition     = alltrue([for m in var.repository_milestone : (m.due_date == null ? true : can(regex("[0-9][0-9][0-9][0-9]-[0-1][0-9]-[0-3][0-9]", m.due_date)))])
+    error_message = <<-EOF
+      Value violation: one or more values of 'var.repository_milestone.due_date' are invalid.
+      Allowed values are: a date formatted as "YYYY-MM-DD" or null.
+    EOF
+  }
+  validation {
+    condition     = alltrue([for m in var.repository_milestone : (m.state == null ? true : contains(["open","closed"], m.state))])
+    error_message = <<-EOF
+      Value violation: one or more values of 'var.repository_milestone.state' are invalid.
+      Allowed values are: "open", "closed" or null.
     EOF
   }
 }

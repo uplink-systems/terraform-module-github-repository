@@ -2,6 +2,8 @@
 #   main.tf                                                                                        #
 ####################################################################################################
 
+##########  Repository section  ####################################################################
+
 resource "github_repository" "repository" {
   name                                    = var.repository.name
   description                             = var.repository.description
@@ -64,6 +66,8 @@ resource "github_repository" "repository" {
   }
 }
 
+##########  Repository permissions section  #######################################################
+
 resource "github_repository_collaborator" "collaborator" {
   for_each                                = { for i in concat(local.collaborator.admin,local.collaborator.maintain,local.collaborator.pull,local.collaborator.push,local.collaborator.triage) : i.username => i }
   repository                              = github_repository.repository.name
@@ -80,6 +84,8 @@ resource "github_team_repository" "team" {
   depends_on                              = [ github_repository.repository ]
 }
 
+##########  Branch section  #######################################################################
+
 resource "github_branch" "branch" {
   for_each                                = { for b in var.branch : b.branch => b }
   repository                              = github_repository.repository.name
@@ -93,4 +99,25 @@ resource "github_branch_default" "branch_default" {
   repository                              = github_repository.repository.name
   branch                                  = local.branch_default.branch
   depends_on                              = [ github_repository.repository, github_branch.branch ]
+}
+
+##########  Milestone section  ####################################################################
+
+resource "time_offset" "offset" {
+  for_each                                = {for k, v in var.repository_milestone : k => v if v.due_date == null}
+  offset_days                             = 7
+}
+
+resource "github_repository_milestone" "repository_milestone" {
+  for_each                                = var.repository_milestone
+  repository                              = github_repository.repository.name
+  title                                   = each.value.title
+  owner                                   = each.value.owner
+  description                             = each.value.description
+  due_date                                = each.value.due_date == null ? formatdate("YYYY-MM-DD", time_offset.offset[each.key].base_rfc3339) : each.value.due_date
+  state                                   = each.value.state == null ? "open" : each.value.state
+  depends_on                              = [ github_repository.repository, time_offset.offset ]
+  lifecycle {
+    ignore_changes  = [ state ]
+  }
 }

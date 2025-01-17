@@ -14,6 +14,7 @@ This includes the following guidelines:
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.9.0 |
 | <a name="requirement_github"></a> [integrations\/github](#requirement\_github) | ~> 6.0 |
+| <a name="requirement_time"></a> [hashicorp\/time](#requirement\_time) | ~> 0.12 |
 
 ### Resources
 
@@ -24,6 +25,8 @@ This includes the following guidelines:
 | [github_team_repository.team](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/team_repository) | resource |
 | [github_branch.branch](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/branch) | resource |
 | [github_branch_default.branch_default](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/branch_default) | resource |
+| [time_offset.offset](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/offset) | resource |
+| [github_repository_milestone.milestone](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_milestone) | resource |
 
 ### Inputs
 
@@ -34,6 +37,7 @@ This includes the following guidelines:
 | <a name="input_team"></a> [team](#input\_team) | 'var.team' specifies lists of different team names for the repository | <pre>type        = object({<br>  enabled     = optional(bool, true)<br>  admin       = optional(list(string), [])<br>  maintain    = optional(list(string), [])<br>  pull        = optional(list(string), [])<br>  push        = optional(list(string), [])<br>  triage      = optional(list(string), [])<br>})<br></pre> | <pre>{ enabled = false }</pre> | no |
 | <a name="input_branch"></a> [branch](#input\_branch) | 'var.branch' is the optional variable for additional github_branch resource settings | <pre>type        = list(object({<br>  branch          = string<br>  source_branch   = optional(string, null)<br>  source_sha      = optional(string, null)<br>}))<br></pre> | <pre>[ ]</pre> | no |
 | <a name="input_branch_default"></a> [branch\_default](#input\_branch\_default) | 'var.branch_default' is the optional variable for the github_branch_default resource settings | <pre>type        = object({<br>  branch      = string<br>})<br></pre> | none | no |
+| <a name="input_repository_milestone"></a> [repository\_milestone](#input\_repository\_milestone) | 'var.repository_milestone' is the optional variable for the github_repository_milestone resource settings | <pre>type        = map(object({<br>  owner           = string<br>  title           = string<br>  description     = optional(string, null)<br>  due_date        = optional(string, null)<br>  state           = optional(string, "open")<br>}))<br></pre> | <pre>{ }</pre> | no |
 
 ### Outputs
 
@@ -44,6 +48,7 @@ This includes the following guidelines:
 | <a name="output_github_team_repository"></a> [github\_team\_repository](#output\_github\_team\_repository) | list of all exported attributes values from the team_repository resource(s) |
 | <a name="output_github_branch"></a> [github\_branch](#output\_github\_branch) | list of all exported attributes values from the branch resource(s) |
 | <a name="output_github_branch_default"></a> [github\_branch\_default](#output\_github\_branch\_default) | list of all exported attributes values from the branch_default resource(s) |
+| <a name="output_github_repository_milestone"></a> [github\_repository\_milestone](#output\_github\_repository\_milestone) | list of all exported attributes values from the repository_milestone resource(s) |
   
 ### Known Issues
 

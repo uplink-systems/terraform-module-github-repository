@@ -31,3 +31,9 @@ output "github_branch_default" {
   value       = github_branch_default.branch_default
   depends_on  = [ github_branch_default.branch_default ]
 }
+
+output "github_repository_milestone" {
+  description = "output the github_repository_milestone attributes"
+  value       = github_repository_milestone.repository_milestone
+  depends_on  = [ github_repository_milestone.repository_milestone ]
+}
