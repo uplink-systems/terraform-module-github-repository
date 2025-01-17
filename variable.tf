@@ -35,7 +35,7 @@ variable "repository" {
     }), null)
     topics                                  = optional(list(string), null)
     visibility                              = optional(string, null)
-    vulnerability_alerts                    = optional(bool, true)
+    vulnerability_alerts                    = optional(bool, null)
     web_commit_signoff_required             = optional(bool, false)
   })
   validation {
