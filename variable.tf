@@ -149,3 +149,15 @@ variable "issue_label" {
   })
   default     = { merge = false }
 }
+
+variable "issue" {
+  description = "(Optional) list of objects of repository's issues"
+  type        = list(object({
+    title             = string
+    body              = optional(string, null)
+    labels            = optional(list(string), [])
+    assignees         = optional(list(string), [])
+    milestone_number  = optional(number, null)
+  }))
+  default     = []
+}

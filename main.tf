@@ -104,7 +104,7 @@ resource "github_branch_default" "branch_default" {
 ##########  Milestone section  ####################################################################
 
 resource "time_offset" "offset" {
-  for_each                                = {for k, v in var.repository_milestone : k => v if v.due_date == null}
+  for_each                                = { for k, v in var.repository_milestone : k => v if v.due_date == null }
   offset_days                             = 7
 }
 
@@ -125,10 +125,24 @@ resource "github_repository_milestone" "repository_milestone" {
 ##########  Issue section  ########################################################################
 
 resource "github_issue_label" "issue_label" {
-  for_each    = local.issue_label.label
-  repository  = github_repository.repository.name
-  name        = each.value.name
-  color       = each.value.color
-  description = each.value.description
-  depends_on  = [ github_repository.repository ]
+  for_each                                = local.issue_label.label
+  repository                              = github_repository.repository.name
+  name                                    = each.value.name
+  color                                   = each.value.color
+  description                             = each.value.description
+  depends_on                              = [ github_repository.repository ]
+}
+
+resource "github_issue" "issue" {
+  for_each                                = { for i in var.issue : lower(i.title) => i }
+  repository                              = github_repository.repository.name
+  title                                   = lower(each.value.title)
+  body                                    = each.value.body
+  labels                                  = each.value.labels
+  assignees                               = each.value.assignees
+  milestone_number                        = each.value.milestone_number
+  depends_on                              = [ github_issue_label.issue_label, github_repository_milestone.repository_milestone ]
+  lifecycle {
+    ignore_changes  = [ body ]
+  }
 }

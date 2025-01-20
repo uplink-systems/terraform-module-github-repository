@@ -43,3 +43,9 @@ output "github_issue_label" {
   value       = github_issue_label.issue_label
   depends_on  = [ github_issue_label.issue_label ]
 }
+
+output "github_issue" {
+  description = "output the github_issue attributes"
+  value       = github_issue.issue
+  depends_on  = [ github_issue.issue ]
+}

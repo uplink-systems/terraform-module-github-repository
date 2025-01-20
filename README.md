@@ -28,6 +28,7 @@ This includes the following guidelines:
 | [time_offset.offset](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/offset) | resource |
 | [github_repository_milestone.milestone](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_milestone) | resource |
 | [github_issue_label.issue_label](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/issue_label) | resource |
+| [github_issue.issue](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/issue) | resource |
 
 ### Inputs
 
@@ -40,6 +41,7 @@ This includes the following guidelines:
 | <a name="input_branch_default"></a> [branch\_default](#input\_branch\_default) | 'var.branch_default' is the optional variable for the github_branch_default resource settings | <pre>type        = object({<br>  branch      = string<br>})<br></pre> | none | no |
 | <a name="input_repository_milestone"></a> [repository\_milestone](#input\_repository\_milestone) | 'var.repository_milestone' is the optional variable for the github_repository_milestone resource settings | <pre>type        = map(object({<br>  owner           = string<br>  title           = string<br>  description     = optional(string, null)<br>  due_date        = optional(string, null)<br>  state           = optional(string, "open")<br>}))<br></pre> | <pre>{ }</pre> | no |
 | <a name="input_issue_label"></a> [issue\_label](#input\_issue\_label) | 'var.issue_label' is the optional variable for the github_issue_label resource settings | <pre>type        = object({<br>  merge       = optional(bool, null)<br>  label       = optional(list(object({<br>    name        = string<br>    color       = string<br>    description = string<br>  })), [])<br>})<br></pre> | <pre>{ merge = false }</pre> | no |
+| <a name="input_issue"></a> [issue\](#input\_issue) | 'var.issue' is the optional variable for the github_issue resource settings | <pre>type        = list(object({<br>  title             = string<br>  body              = optional(string, null)<br>  labels            = optional(list(string), [])<br>  assignees         = optional(list(string), [])<br>  milestone_number  = optional(number, null)<br>}))<br></pre> | <pre>[ ]</pre> | no |
 
 ### Outputs
 
@@ -52,6 +54,7 @@ This includes the following guidelines:
 | <a name="output_github_branch_default"></a> [github\_branch\_default](#output\_github\_branch\_default) | list of all exported attributes values from the branch_default resource(s) |
 | <a name="output_github_repository_milestone"></a> [github\_repository\_milestone](#output\_github\_repository\_milestone) | list of all exported attributes values from the repository_milestone resource(s) |
 | <a name="output_github_issue_label"></a> [github\_issue\_label](#output\_github\_issue\_issue) | list of all exported attributes values from the issue_label resource(s) |
+| <a name="output_github_issue"></a> [github\_issue](#output\_github\_issue) | list of all exported attributes values from the issue resource(s) |
   
 ### Known Issues
 
@@ -87,6 +90,15 @@ The variable 'branch_default' is unset (null) by default and if no other values 
 </details>
 
 ### Notes / Hints / HowTos
+
+<details>
+<summary><b>Lifecycle values</b></summary>
+
+######
+* 'repository_milestone' resource -> the module ignores changes of the 'state' attribute because the state should be maintained by the repository's members after initial creation
+* 'issue' resource -> the module ignores changes of the 'body' attribute because the issue's body/description should be maintained by the issue's owners after initial creation
+######
+</details>
 
 <details>
 <summary><b>Variable setting 'issue_label.merge'</b></summary>

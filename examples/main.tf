@@ -16,7 +16,7 @@ module "public-repository" {
     name                  = "public-repository"
     description           = "public repository created by Terraform"
     gitignore_template    = "C++"
-    has_issues            = true
+    has_issues            = false
     license_template      = "eupl-1.2"
     topics                = ["open-source","code"]
     visibility            = "public"
@@ -29,7 +29,6 @@ module "public-repository-with-all-optional-features-configured" {
     name                    = "public-repository-with-all-optional-features-configured"
     description             = "public repository-with-all-optional-features-configured created by Terraform"
     gitignore_template      = "Terraform"
-    has_issues              = true
     license_template        = "eupl-1.2"
     topics                  = ["terraform","iac"]
     visibility              = "public"
@@ -52,4 +51,8 @@ module "public-repository-with-all-optional-features-configured" {
       { name = "second custom label", color = "F0F0F0", description = "This is a second custom label for example purpose."},
     ]
   }
+  issue = [
+    { title = "bug with docu", body = "## Bug with Docu<br>Description of the bug...", labels = ["bug", "documentation"],  },
+    { title = "new feature", body = "##New Feature<br>Request description...", labels = ["enhancement"], assignees = ["github-example-user-1","github-example-user-2"], milestone_number = 2 }
+  ]
  }
