@@ -130,3 +130,22 @@ variable "repository_milestone" {
     EOF
   }
 }
+
+variable "issue_label" {
+  description = <<-EOF
+    (Optional) merge:
+    specifiy if GitHub's default issue labels shall be merged and controlled; defaults to false if
+    no custom label specified, defaults to null (and results in a merge) if custom label specified
+    (Optional) label:
+    configure a list of one ore more GitHub issue label resource(s).
+  EOF
+  type        = object({
+    merge       = optional(bool, null)
+    label       = optional(list(object({
+      name        = string
+      color       = string
+      description = string
+    })), [])
+  })
+  default     = { merge = false }
+}

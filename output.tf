@@ -37,3 +37,9 @@ output "github_repository_milestone" {
   value       = github_repository_milestone.repository_milestone
   depends_on  = [ github_repository_milestone.repository_milestone ]
 }
+
+output "github_issue_label" {
+  description = "output the github_issue_label attributes"
+  value       = github_issue_label.issue_label
+  depends_on  = [ github_issue_label.issue_label ]
+}

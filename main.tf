@@ -121,3 +121,14 @@ resource "github_repository_milestone" "repository_milestone" {
     ignore_changes  = [ state ]
   }
 }
+
+##########  Issue section  ########################################################################
+
+resource "github_issue_label" "issue_label" {
+  for_each    = local.issue_label.label
+  repository  = github_repository.repository.name
+  name        = each.value.name
+  color       = each.value.color
+  description = each.value.description
+  depends_on  = [ github_repository.repository ]
+}

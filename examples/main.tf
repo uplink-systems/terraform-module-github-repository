@@ -45,4 +45,11 @@ module "public-repository-with-all-optional-features-configured" {
     "test_stage_reached"      = { owner = var.github.owner, title = "Test stage reached", description = "Steps/issues/tasks to reach Test stage", state = "closed" }
     "release_stage_reached"   = { owner = var.github.owner, title = "Release stage reached", description = "Steps/issues/tasks to reach Release stage", due_date = "2025-12-31",  }
   }
+  issue_label = {
+    merge                     = true
+    label                     = [
+      { name = "first custom label", color = "123456", description = "This is the first custom label for example purpose."},
+      { name = "second custom label", color = "F0F0F0", description = "This is a second custom label for example purpose."},
+    ]
+  }
  }
