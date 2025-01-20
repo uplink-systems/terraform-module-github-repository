@@ -29,7 +29,7 @@ module "public-repository-with-all-optional-features-configured" {
     name                    = "public-repository-with-all-optional-features-configured"
     description             = "public repository-with-all-optional-features-configured created by Terraform"
     gitignore_template      = "Terraform"
-    license_template        = "eupl-1.2"
+    license_template        = "mit"
     topics                  = ["terraform","iac"]
     visibility              = "public"
   }
@@ -52,7 +52,22 @@ module "public-repository-with-all-optional-features-configured" {
     ]
   }
   issue = [
-    { title = "bug with docu", body = "## Bug with Docu<br>Description of the bug...", labels = ["bug", "documentation"],  },
-    { title = "new feature", body = "##New Feature<br>Request description...", labels = ["enhancement"], assignees = ["github-example-user-1","github-example-user-2"], milestone_number = 2 }
+    {
+      title             = "new feature"
+      body              = "Example with simple single-line text body"
+      labels            = ["enhancement"]
+      assignees         = ["github-example-user-1","github-example-user-2"]
+      milestone_number  = 2
+    },
+    {
+      title             = "bug with docu"
+      body              = <<-EOT
+        ## Complex issue body
+        ### Multi-line example
+        This example shows a complex body using multi-line EOT block...
+        **Full Changelog**: https://github.com/example-github-account-or-orga/example-repo/commits/v1.0.0
+      EOT
+      labels            = ["bug","documentation"]
+    }
   ]
  }

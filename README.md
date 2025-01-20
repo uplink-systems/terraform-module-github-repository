@@ -82,6 +82,14 @@ The module is configured to apply security_and_analysis features only if 'var.re
 </details>
 
 <details>
+<summary><b>Creating multiple branches can fail if they depend on each other</b></summary>
+
+######
+Creating multiple branches at once can fail in the case that they depend on each other. E.g. 'test' branch depends on 'main' branch and 'prod' branch depends on 'test' branch. In this case creating 'prod' branch might fail because 'test' branch has not finished to be created yet but is a depending branch for 'prod' branch. Either create branches one after another if they depend on each other or process multiple Terraform apply runs until no error occurs any more.
+######
+</details>
+
+<details>
 <summary><b>Variable 'branch_default'</b></summary>
 
 ######
