@@ -27,6 +27,7 @@ This includes the following guidelines:
 | [github_branch_default.branch_default](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/branch_default) | resource |
 | [time_offset.offset](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/offset) | resource |
 | [github_repository_milestone.milestone](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_milestone) | resource |
+| [github_issue_label.issue_label](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/issue_label) | resource |
 
 ### Inputs
 
@@ -38,6 +39,7 @@ This includes the following guidelines:
 | <a name="input_branch"></a> [branch](#input\_branch) | 'var.branch' is the optional variable for additional github_branch resource settings | <pre>type        = list(object({<br>  branch          = string<br>  source_branch   = optional(string, null)<br>  source_sha      = optional(string, null)<br>}))<br></pre> | <pre>[ ]</pre> | no |
 | <a name="input_branch_default"></a> [branch\_default](#input\_branch\_default) | 'var.branch_default' is the optional variable for the github_branch_default resource settings | <pre>type        = object({<br>  branch      = string<br>})<br></pre> | none | no |
 | <a name="input_repository_milestone"></a> [repository\_milestone](#input\_repository\_milestone) | 'var.repository_milestone' is the optional variable for the github_repository_milestone resource settings | <pre>type        = map(object({<br>  owner           = string<br>  title           = string<br>  description     = optional(string, null)<br>  due_date        = optional(string, null)<br>  state           = optional(string, "open")<br>}))<br></pre> | <pre>{ }</pre> | no |
+| <a name="input_issue_label"></a> [issue\_label](#input\_issue\_label) | 'var.issue_label' is the optional variable for the github_issue_label resource settings | <pre>type        = object({<br>  merge       = optional(bool, null)<br>  label       = optional(list(object({<br>    name        = string<br>    color       = string<br>    description = string<br>  })), [])<br>})<br></pre> | <pre>{ merge = false }</pre> | no |
 
 ### Outputs
 
@@ -49,6 +51,7 @@ This includes the following guidelines:
 | <a name="output_github_branch"></a> [github\_branch](#output\_github\_branch) | list of all exported attributes values from the branch resource(s) |
 | <a name="output_github_branch_default"></a> [github\_branch\_default](#output\_github\_branch\_default) | list of all exported attributes values from the branch_default resource(s) |
 | <a name="output_github_repository_milestone"></a> [github\_repository\_milestone](#output\_github\_repository\_milestone) | list of all exported attributes values from the repository_milestone resource(s) |
+| <a name="output_github_issue_label"></a> [github\_issue\_label](#output\_github\_issue\_issue) | list of all exported attributes values from the issue_label resource(s) |
   
 ### Known Issues
 
@@ -80,5 +83,20 @@ The module is configured to apply security_and_analysis features only if 'var.re
 
 ######
 The variable 'branch_default' is unset (null) by default and if no other values are specified. In this case the 'main' branch is configured as default. Setting the variable to another branch can only be done after a repository has already been created, and after a correct reference has been created for the target branch inside the repository. This means a user will have to omit this parameter from the initial repository creation and create the target branch inside of the repository prior to setting this attribute.  
+######
+</details>
+
+### Notes / Hints / HowTos
+
+<details>
+<summary><b>Variable setting 'issue_label.merge'</b></summary>
+
+######
+The variable setting 'issue_label.merge' can be used to manage the GitHub's default issue labels in addition to the custom created ones.  
+How it works:  
+- The default value for the setting is 'false' if no custom issue label is specified to create as this situation implies that issue labels shall not be managed. Setting the value manually to 'true' adds the default GitHub issue labels to Terraform state during next apply and allows them to be managed.  
+- The default value for the setting is 'null' if one or more custom issue labels are specified to create. A 'null' value equals a 'true' value for the module and therefore adds the default GitHub issue labels to Terraform state and allows them to be managed. Setting the variable manually to 'false' skips importing the default issue labels.  
+The variable setting also allows the admin to REMOVE the GitHub default issue labels. This can be done by setting the value to 'true' and apply. After successfull apply the value must be set to 'false' and applied again. This adds the existing default issue labels to Terraform state during first apply and destroys the issue labels (and removes it from GitHub) during second apply. Changing the variable setting to 'true' again restores the default issue labels again.  
+ 
 ######
 </details>
