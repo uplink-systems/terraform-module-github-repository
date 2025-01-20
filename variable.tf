@@ -19,7 +19,7 @@ variable "repository" {
     gitignore_template                      = optional(string, null)
     has_discussions                         = optional(bool, false)
     has_downloads                           = optional(bool, false)
-    has_issues                              = optional(bool, false)
+    has_issues                              = optional(bool, true)
     has_projects                            = optional(bool, false)
     has_wiki                                = optional(bool, false)
     homepage_url                            = optional(string, null)
