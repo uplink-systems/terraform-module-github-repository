@@ -26,7 +26,7 @@ This includes the following guidelines:
 | [github_branch.branch](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/branch) | resource |
 | [github_branch_default.branch_default](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/branch_default) | resource |
 | [time_offset.offset](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/offset) | resource |
-| [github_repository_milestone.milestone](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_milestone) | resource |
+| [github_repository_milestone.repository_milestone](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_milestone) | resource |
 | [github_issue_label.issue_label](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/issue_label) | resource |
 | [github_issue.issue](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/issue) | resource |
 
