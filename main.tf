@@ -137,7 +137,7 @@ resource "github_issue" "issue" {
   for_each                                = var.issue
   repository                              = github_repository.repository.name
   title                                   = each.value.title
-  body                                    = each.value.body
+  body                                    = each.value.body == null ? "## ${each.value.title}" : each.value.body
   labels                                  = each.value.labels
   assignees                               = each.value.assignees
   milestone_number                        = each.value.milestone_number
