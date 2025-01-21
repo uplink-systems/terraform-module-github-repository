@@ -68,16 +68,16 @@ resource "github_repository" "repository" {
 
 ##########  Repository permissions section  #######################################################
 
-resource "github_repository_collaborator" "collaborator" {
-  for_each                                = { for i in concat(local.collaborator.admin,local.collaborator.maintain,local.collaborator.pull,local.collaborator.push,local.collaborator.triage) : i.username => i }
+resource "github_repository_collaborator" "repository_collaborator" {
+  for_each                                = { for i in concat(local.repository_collaborator.admin,local.repository_collaborator.maintain,local.repository_collaborator.pull,local.repository_collaborator.push,local.repository_collaborator.triage) : i.username => i }
   repository                              = github_repository.repository.name
   username                                = each.value.username
   permission                              = each.value.permission
   depends_on                              = [ github_repository.repository ]
 }
 
-resource "github_team_repository" "team" {
-  for_each                                = { for i in concat(local.team.admin,local.team.maintain,local.team.pull,local.team.push,local.team.triage) : i.slug => i }
+resource "github_team_repository" "team_repository" {
+  for_each                                = { for i in concat(local.team_repository.admin,local.team_repository.maintain,local.team_repository.pull,local.team_repository.push,local.team_repository.triage) : i.slug => i }
   repository                              = github_repository.repository.name
   team_id                                 = each.value.slug
   permission                              = each.value.permission

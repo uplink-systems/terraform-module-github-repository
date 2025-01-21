@@ -54,7 +54,7 @@ variable "repository" {
   }
 }
 
-variable "collaborator" {
+variable "repository_collaborator" {
   description = "(Optional) object of lists of collaborators separated by their permission (full/maintain/read-only/read-write/triage)"
   type        = object({
     enabled     = optional(bool, true)
@@ -67,7 +67,7 @@ variable "collaborator" {
   default     = { enabled = false }
 }
 
-variable "team" {
+variable "team_repository" {
   description = "(Optional) object of lists of team names separated by their permission (full/maintain/read-only/read-write/triage)"
   type        = object({
     enabled     = optional(bool, true)

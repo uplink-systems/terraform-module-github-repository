@@ -10,14 +10,14 @@ output "github_repository" {
 
 output "github_repository_collaborator" {
   description = "output the github_repository_collaborator attributes"
-  value       = github_repository_collaborator.collaborator
-  depends_on  = [ github_repository_collaborator.collaborator ]
+  value       = github_repository_collaborator.repository_collaborator
+  depends_on  = [ github_repository_collaborator.repository_collaborator ]
 }
 
 output "github_team_repository" {
   description = "output the github_team_repository attributes"
-  value       = github_team_repository.team
-  depends_on  = [ github_team_repository.team ]
+  value       = github_team_repository.team_repository
+  depends_on  = [ github_team_repository.team_repository ]
 }
 
 output "github_branch" {

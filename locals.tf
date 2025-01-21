@@ -3,7 +3,7 @@
 ####################################################################################################
 
 locals {
-  repository      = {
+  repository              = {
     template                  = var.repository.template == null ? [] : [var.repository.template]
     visibility                = var.repository.visibility == null ? "private" : var.repository.visibility
     security_and_analysis     = {
@@ -19,24 +19,24 @@ locals {
     }
     vulnerability_alerts      = var.repository.visibility == "public" ? (var.repository.vulnerability_alerts == null ? true : var.repository.vulnerability_alerts) : var.repository.vulnerability_alerts
   }
-  collaborator    = {
-    admin                     = [ for i in var.collaborator.admin : { username = i, permission = "admin" } ]
-    maintain                  = [ for i in var.collaborator.maintain : { username = i, permission = "maintain" } ]
-    pull                      = [ for i in var.collaborator.pull : { username = i, permission = "pull" } ]
-    push                      = [ for i in var.collaborator.push : { username = i, permission = "push" } ]
-    triage                    = [ for i in var.collaborator.triage : { username = i, permission = "triage" } ]
+  repository_collaborator = {
+    admin                     = [ for i in var.repository_collaborator.admin : { username = i, permission = "admin" } ]
+    maintain                  = [ for i in var.repository_collaborator.maintain : { username = i, permission = "maintain" } ]
+    pull                      = [ for i in var.repository_collaborator.pull : { username = i, permission = "pull" } ]
+    push                      = [ for i in var.repository_collaborator.push : { username = i, permission = "push" } ]
+    triage                    = [ for i in var.repository_collaborator.triage : { username = i, permission = "triage" } ]
   }
-  team            = {
-    admin                     = [ for i in var.team.admin : { slug = replace(lower(i), "/[^a-z0-9_]/", "-"), permission = "admin" } ]
-    maintain                  = [ for i in var.team.maintain : { slug = replace(lower(i), "/[^a-z0-9_]/", "-"), permission = "maintain" } ]
-    pull                      = [ for i in var.team.pull : { slug = replace(lower(i), "/[^a-z0-9_]/", "-"), permission = "pull" } ]
-    push                      = [ for i in var.team.push : { slug = replace(lower(i), "/[^a-z0-9_]/", "-"), permission = "push" } ]
-    triage                    = [ for i in var.team.triage : { slug = replace(lower(i), "/[^a-z0-9_]/", "-"), permission = "triage" } ]
+  team_repository         = {
+    admin                     = [ for i in var.team_repository.admin : { slug = replace(lower(i), "/[^a-z0-9_]/", "-"), permission = "admin" } ]
+    maintain                  = [ for i in var.team_repository.maintain : { slug = replace(lower(i), "/[^a-z0-9_]/", "-"), permission = "maintain" } ]
+    pull                      = [ for i in var.team_repository.pull : { slug = replace(lower(i), "/[^a-z0-9_]/", "-"), permission = "pull" } ]
+    push                      = [ for i in var.team_repository.push : { slug = replace(lower(i), "/[^a-z0-9_]/", "-"), permission = "push" } ]
+    triage                    = [ for i in var.team_repository.triage : { slug = replace(lower(i), "/[^a-z0-9_]/", "-"), permission = "triage" } ]
   }
-  branch_default  = {
+  branch_default          = {
     branch                    = var.branch_default == null ? "main" : var.branch_default.branch
   }
-  issue_label     = {
+  issue_label             = {
     label                     = merge({ for i in (
       (var.issue_label.merge == null ? true : var.issue_label.merge) ? [
         { name = "bug",              color = "d73a4a", description = "Something isn't working" },
