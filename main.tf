@@ -134,9 +134,9 @@ resource "github_issue_label" "issue_label" {
 }
 
 resource "github_issue" "issue" {
-  for_each                                = { for i in var.issue : lower(i.title) => i }
+  for_each                                = var.issue
   repository                              = github_repository.repository.name
-  title                                   = lower(each.value.title)
+  title                                   = each.value.title
   body                                    = each.value.body
   labels                                  = each.value.labels
   assignees                               = each.value.assignees

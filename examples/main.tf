@@ -51,15 +51,15 @@ module "public-repository-with-all-optional-features-configured" {
       { name = "second custom label", color = "F0F0F0", description = "This is a second custom label for example purpose."},
     ]
   }
-  issue = [
-    {
+  issue = {
+    "00001" = {
       title             = "new feature"
       body              = "Example with simple single-line text body"
       labels            = ["enhancement"]
       assignees         = ["github-example-user-1","github-example-user-2"]
       milestone_number  = 2
     },
-    {
+    "00002" = {
       title             = "bug with docu"
       body              = <<-EOT
         ## Complex issue body
@@ -69,5 +69,5 @@ module "public-repository-with-all-optional-features-configured" {
       EOT
       labels            = ["bug","documentation"]
     }
-  ]
+  }
  }

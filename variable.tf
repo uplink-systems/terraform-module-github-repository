@@ -151,13 +151,13 @@ variable "issue_label" {
 }
 
 variable "issue" {
-  description = "(Optional) list of objects of repository's issues"
-  type        = list(object({
+  description = "(Optional) map of objects of repository's issues"
+  type        = map(object({
     title             = string
     body              = optional(string, null)
     labels            = optional(list(string), [])
     assignees         = optional(list(string), [])
     milestone_number  = optional(number, null)
   }))
-  default     = []
+  default     = { }
 }
