@@ -144,7 +144,7 @@ variable "issue_label" {
     label       = optional(list(object({
       name        = string
       color       = string
-      description = string
+      description = optional(string, null)
     })), [])
   })
   default     = { merge = false }
