@@ -58,44 +58,9 @@ This includes the following guidelines:
   
 ### Known Issues
 
-<details>
-<summary><b>Repository for 'GitHub pages'</b></summary>
-
-######
-The module currently does not allow to create a repository for GitHub pages. This is on hold as GitHub retired one of the deployment types.
-######
-</details>
-
-<details>
-<summary><b>'Error 422' after changing <i>security_and_analysis</i> values</b></summary>
-
-######
-Changing security_and_analysis' state attributes from "enabled" to "disabled" or vice versa can lead to Error 422 during apply, e.g.:  
-*Error: PATCH https://api.github.com/repos/{GitHub-Id}/{Repository}: 422 Secret scanning is not available for this repository. []*  
-This is a known issue of the GitHub provider (see: https://github.com/integrations/terraform-provider-github/issues/2145).
- and occurs using this module in the following cases:  
-* GitHub Actions is disabled on repository level or on organization level.  
-* The repositories visibiliy is changed from 'private' to 'public'. The error occurs because the feature is not yet available when the visibility change is applied. A second apply is needed to change the 'security_and_analysis' values.   
-The module is configured to apply security_and_analysis features only if 'var.repository.visibiliy' is configured to 'public' because Advanced Security for private repositories and its depended features is only available for enterprise accounts on GitHub Enterprise Cloud and GitHub Enterprise Server whereas the module is intended for non-enterprise environments. For private repositories the state values are 'null' and cannot be enabled to prevent to enable security_and_analysis feature to a repository where the features are not available.   
+Known issues are documented with the GitHub repo's issues functionality. Please filter the issues by **Types** and select **Known Issue** to get the appropriate issues and read the results carefully before using the module to avoid negative impacts on your infrastructure.  
   
-######
-</details>
-
-<details>
-<summary><b>Creating multiple branches can fail if they depend on each other</b></summary>
-
-######
-Creating multiple branches at once can fail in the case that they depend on each other. E.g. 'test' branch depends on 'main' branch and 'prod' branch depends on 'test' branch. In this case creating 'prod' branch might fail because 'test' branch has not finished to be created yet but is a depending branch for 'prod' branch. Either create branches one after another if they depend on each other or process multiple Terraform apply runs until no error occurs any more.
-######
-</details>
-
-<details>
-<summary><b>Variable 'branch_default'</b></summary>
-
-######
-The variable 'branch_default' is unset (null) by default and if no other values are specified. In this case the 'main' branch is configured as default. Setting the variable to another branch can only be done after a repository has already been created, and after a correct reference has been created for the target branch inside the repository. This means a user will have to omit this parameter from the initial repository creation and create the target branch inside of the repository prior to setting this attribute.  
-######
-</details>
+<a name="known_issues"></a> [list of Known Issues](https://github.com/uplink-systems/terraform-module-github-repository/issues?q=type%3A%22known%20issue%22)
 
 ### Notes / Hints / HowTos
 
