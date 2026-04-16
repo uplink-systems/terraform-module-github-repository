@@ -17,6 +17,7 @@ locals {
         status                          = (var.repository.visibility == "public" ? try(var.repository.security_and_analysis.secret_scanning_push_protection.status, "disabled") : (try(var.repository.security_and_analysis.advanced_security.status == "enabled", false) ? try(var.repository.security_and_analysis.secret_scanning_push_protection.status, null) : null))
       }
     }
+    vulnerability_alerts      = var.repository.visibility == "public" ? (var.repository.vulnerability_alerts == null ? true : var.repository.vulnerability_alerts) : var.repository.vulnerability_alerts
   }
   collaborator    = {
     admin                     = [ for i in var.collaborator.admin : { username = i, permission = "admin" } ]

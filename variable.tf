@@ -35,7 +35,7 @@ variable "repository" {
     }), null)
     topics                                  = optional(list(string), null)
     visibility                              = optional(string, null)
-    vulnerability_alerts                    = optional(bool, null)
+    vulnerability_alerts                    = optional(bool, true)
     web_commit_signoff_required             = optional(bool, false)
   })
   validation {
@@ -88,3 +88,19 @@ variable "branch_default" {
   default     = null
 }
 
+variable "branch" {
+  description = "(Optional) Settings as list of additional repository branches"
+  type        = list(object({
+    branch          = string
+    source_branch   = optional(string, null)
+    source_sha      = optional(string, null)
+  }))
+  default     = []
+  validation {
+    condition     = alltrue([for b in var.branch : !contains(["main"], b.branch)])
+    error_message = <<-EOF
+      Branch naming violation: 'var.branch.branch' has an invalid value.
+      The value "main" is not allowed as additional branch name.
+    EOF
+  }
+}
