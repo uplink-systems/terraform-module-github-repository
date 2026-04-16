@@ -18,12 +18,10 @@ variable "repository" {
     delete_branch_on_merge                  = optional(bool, null)
     gitignore_template                      = optional(string, null)
     has_discussions                         = optional(bool, false)
-    has_downloads                           = optional(bool, false)
-    has_issues                              = optional(bool, false)
+    has_issues                              = optional(bool, true)
     has_projects                            = optional(bool, false)
     has_wiki                                = optional(bool, false)
     homepage_url                            = optional(string, null)
-    ignore_vulnerability_alerts_during_read = optional(bool, null)
     is_template                             = optional(bool, false)
     license_template                        = optional(string, null)
     pages                                   = optional(any, null)
@@ -54,7 +52,7 @@ variable "repository" {
   }
 }
 
-variable "collaborator" {
+variable "repository_collaborator" {
   description = "(Optional) object of lists of collaborators separated by their permission (full/maintain/read-only/read-write/triage)"
   type        = object({
     enabled     = optional(bool, true)
@@ -67,7 +65,7 @@ variable "collaborator" {
   default     = { enabled = false }
 }
 
-variable "team" {
+variable "team_repository" {
   description = "(Optional) object of lists of team names separated by their permission (full/maintain/read-only/read-write/triage)"
   type        = object({
     enabled     = optional(bool, true)
@@ -129,4 +127,50 @@ variable "repository_milestone" {
       Allowed values are: "open", "closed" or null.
     EOF
   }
+}
+
+variable "issue_label" {
+  description = <<-EOF
+    (Optional) merge:
+    specifiy if GitHub's default issue labels shall be merged and controlled; defaults to false if
+    no custom label specified, defaults to null (and results in a merge) if custom label specified
+    (Optional) label:
+    configure a list of one ore more GitHub issue label resource(s).
+  EOF
+  type        = object({
+    merge       = optional(bool, null)
+    label       = optional(list(object({
+      name        = string
+      color       = string
+      description = optional(string, null)
+    })), [])
+  })
+  default     = { merge = false }
+}
+
+variable "issue" {
+  description = "(Optional) map of objects of repository's issues"
+  type        = map(object({
+    title             = string
+    body              = optional(string, null)
+    labels            = optional(list(string), [])
+    assignees         = optional(list(string), [])
+    milestone_number  = optional(number, null)
+  }))
+  default     = { }
+}
+
+variable "release" {
+  description = "(Optional) map of objects of repository's releases"
+  type        = map(object({
+    tag_name                  = string
+    name                      = optional(string, null)
+    target_commitish          = optional(string, null)
+    body                      = optional(string, null)
+    generate_release_notes    = optional(bool, null)
+    draft                     = optional(bool, null)
+    prerelease                = optional(bool, null)
+    discussion_category_name  = optional(string, null)
+  }))
+  default     = { }
 }
